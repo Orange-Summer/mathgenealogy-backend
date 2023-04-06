@@ -11,7 +11,7 @@ import org.mapstruct.factory.Mappers;
  * @author OrangeSummer
  * @date Created on 2023/4/3
  */
-@Mapper
+@Mapper(componentModel = "spring")
 public interface MathematicianMapper {
     MathematicianMapper INSTANCE = Mappers.getMapper(MathematicianMapper.class);
 

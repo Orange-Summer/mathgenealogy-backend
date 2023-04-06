@@ -30,7 +30,7 @@ public class Mathematician {
     @Property("title")
     private final String title;
     @Property("year")
-    private final String year;
+    private final Integer year;
     @Property("institution")
     private final String institution;
     @Property("dissertation")

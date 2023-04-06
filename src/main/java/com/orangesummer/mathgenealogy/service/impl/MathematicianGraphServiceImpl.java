@@ -47,14 +47,7 @@ public class MathematicianGraphServiceImpl implements MathematicianGraphService 
         result.put("title",map.getOrDefault("title",""));
         result.put("year",map.getOrDefault("year",0));
         result.put("institution",map.getOrDefault("institution",""));
-        if (map.containsKey("dissertation")){
-            String temp = map.get("dissertation").toString();
-            if (temp.length()>=2){
-                result.put("dissertation",temp.substring(1,temp.length()-1));
-            }else {
-                result.put("dissertation","");
-            }
-        }
+        result.put("dissertation",map.getOrDefault("dissertation",""));
         result.put("classification",map.getOrDefault("classification",""));
         if (map.containsKey(specialKey)){
             if (map.get(specialKey) instanceof List<?>){

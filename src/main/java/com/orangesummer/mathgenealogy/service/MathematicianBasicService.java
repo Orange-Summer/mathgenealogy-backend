@@ -11,6 +11,5 @@ import org.springframework.data.domain.Page;
  * @date Created on 2023/4/3
  */
 public interface MathematicianBasicService {
-    ResultVO<MathematicianVO> getMathematician(Long mid);
-    Page<MathematicianVO> listMathematicians(Integer pageNum);
+    ResultVO<Page<MathematicianVO>> allMathematicians(Integer page, Integer size);
 }

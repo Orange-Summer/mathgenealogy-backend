@@ -17,13 +17,13 @@ import java.util.Map;
 @Repository
 public interface MathematicianGraphRepository extends Neo4jRepository<Mathematician, Long> {
     @Query("""
-            match p = (:Mathematician{mid::#{literal(#mid)}})-[:advisorOf*1..:#{literal(#depth)}]->(:Mathematician)
+            match p = (:Mathematician{mid::#{literal(#mid)}})-[:advisorOf*0..:#{literal(#depth)}]->(:Mathematician)
             with collect(p) as paths
             call apoc.convert.toTree(paths)
             yield value
             return value
             union
-            match p = (:Mathematician{mid::#{literal(#mid)}})-[:studentOf*1..:#{literal(#depth)}]->(:Mathematician)
+            match p = (:Mathematician{mid::#{literal(#mid)}})-[:studentOf*0..:#{literal(#depth)}]->(:Mathematician)
             with collect(p) as paths
             call apoc.convert.toTree(paths)
             yield value

@@ -1,6 +1,5 @@
 package com.orangesummer.mathgenealogy.model.vo;
 
-import com.orangesummer.mathgenealogy.model.po.Mathematician;
 import lombok.Data;
 
 import java.util.List;
@@ -17,11 +16,11 @@ public class MathematicianVO {
     private String name;
     private String country;
     private String title;
-    private String year;
+    private Integer year;
     private String institution;
     private String dissertation;
     private Integer classification;
-    private List<Mathematician> students;
-    private List<Mathematician> advisors;
+    private List<MathematicianVO> students;
+    private List<MathematicianVO> advisors;
 
 }

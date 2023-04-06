@@ -23,5 +23,6 @@ public interface MathematicianBasicRepository extends Neo4jRepository<Mathematic
     @Query("match (n:Mathematician)-[:advisorOf*1..$depth]->(r:Mathematician{mid:mid}) return n")
     List<Mathematician> findAdvisors(Long mid, Integer depth);
 
-    Page<Mathematician> findAllByOrderByMidAsc(Pageable pageable);
+    @Query(value = "match (m) return m order by m.mid asc skip $skip limit $limit", countQuery = "match (m) return count(m)")
+    Page<Mathematician> getList(Pageable pageable);
 }

@@ -1,17 +1,17 @@
 package com.orangesummer.mathgenealogy.service.impl;
 
 import com.orangesummer.mathgenealogy.mapper.MathematicianBasicRepository;
-import com.orangesummer.mathgenealogy.mapper.Neo4jClientRepository;
-import com.orangesummer.mathgenealogy.model.po.MathematicianFindByMid;
+import com.orangesummer.mathgenealogy.model.mapstruct.MathematicianMapper;
+import com.orangesummer.mathgenealogy.model.po.Mathematician;
 import com.orangesummer.mathgenealogy.model.vo.MathematicianVO;
 import com.orangesummer.mathgenealogy.model.vo.ResultVO;
 import com.orangesummer.mathgenealogy.service.MathematicianBasicService;
 import com.orangesummer.mathgenealogy.util.Constant;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
 
 /**
  * Description:
@@ -24,22 +24,13 @@ public class MathematicianBasicServiceImpl implements MathematicianBasicService 
     @Resource
     MathematicianBasicRepository mathematicianBasicRepository;
     @Resource
-    Neo4jClientRepository neo4jClientRepository;
+    MathematicianMapper mathematicianMapper;
 
     @Override
-    public ResultVO<MathematicianVO> getMathematician(Long mid) {
-        Collection<MathematicianFindByMid> mathematician = neo4jClientRepository.findByMid(mid);
-        if (mathematician!=null){
-            // MathematicianVO mathematicianVO = MathematicianMapper.INSTANCE.toMathematicianVO(mathematician);
-            return new ResultVO<>(Constant.REQUEST_SUCCESS, "请求成功", null);
-        }else {
-            return new ResultVO<>(Constant.REQUEST_FAIL, "没有结果", null);
-        }
-    }
-
-
-    @Override
-    public Page<MathematicianVO> listMathematicians(Integer pageNum) {
-        return null;
+    public ResultVO<Page<MathematicianVO>> allMathematicians(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Mathematician> page1 = mathematicianBasicRepository.getList(pageable);
+        Page<MathematicianVO> page2 = page1.map(mathematicianMapper::toMathematicianVO);
+        return new ResultVO<>(Constant.REQUEST_SUCCESS, "请求成功", page2);
     }
 }
