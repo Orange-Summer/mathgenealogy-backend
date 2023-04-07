@@ -13,4 +13,7 @@ public class Constant {
     public static final String REQUEST_SUCCESS_MESSAGE = "请求成功";
     // 请求操作失败返回码
     public static final Integer REQUEST_FAIL = 0;
+    // 图中方向
+    public static final Integer DIRECTION_LEFT = 1;
+    public static final Integer DIRECTION_RIGHT = 2;
 }
