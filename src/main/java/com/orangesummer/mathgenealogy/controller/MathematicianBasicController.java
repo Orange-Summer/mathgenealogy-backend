@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
+import java.util.Map;
+
 /**
  * Description:
  *
@@ -22,8 +25,27 @@ public class MathematicianBasicController {
     @Resource
     MathematicianBasicService mathematicianBasicService;
 
+    @GetMapping("/get")
+    public ResultVO<MathematicianVO> getMathematician(@RequestParam(value = "id") Long mid) {
+        return mathematicianBasicService.getMathematician(mid);
+    }
+
     @GetMapping("/getlist")
     public ResultVO<Page<MathematicianVO>> getAllMathematicians(@RequestParam Integer page, @RequestParam Integer size) {
         return mathematicianBasicService.allMathematicians(page, size);
+    }
+
+    @GetMapping("/getCountryCount")
+    public ResultVO<Collection<Map<String, Object>>> getCountryCount() {
+        return mathematicianBasicService.getCountryCount();
+    }
+
+    @GetMapping("/getInstitutionCount")
+    public ResultVO<Collection<Map<String, Object>>> getInstitutionCount() {
+        return mathematicianBasicService.getInstitutionCount();
+    }
+    @GetMapping("/getClassificationCount")
+    public ResultVO<Collection<Map<String, Object>>> getClassificationCount() {
+        return mathematicianBasicService.getClassificationCount();
     }
 }

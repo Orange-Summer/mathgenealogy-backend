@@ -27,15 +27,16 @@ public class MathematicianGraphServiceImpl implements MathematicianGraphService 
      * @return
      */
     @Override
-    public ResultVO<List<Map<String, Object>>> getTreeByMid(Long mid, Long depth) {
+    public ResultVO<Map<String, Object>> getTreeByMid(Long mid, Long depth) {
         List<Map<String, Object>> mTree = mathematicianGraphRepository.findTreeByMid(mid, depth);
         //改变字段名
         Map<String, Object> students = changeKey(mTree.get(0), "advisorof", Constant.DIRECTION_RIGHT);
         Map<String, Object> advisors = changeKey(mTree.get(1), "studentof", Constant.DIRECTION_LEFT);
-        List<Map<String, Object>> result = new ArrayList<>();
-        result.add(students);
-        result.add(advisors);
-        return new ResultVO<>(Constant.REQUEST_SUCCESS, Constant.REQUEST_SUCCESS_MESSAGE, result);
+        Collection stuChildren = (Collection) students.get("children");
+        Collection advChildren = (Collection) advisors.get("children");
+        stuChildren.addAll(advChildren);
+        students.put("children",stuChildren);
+        return new ResultVO<>(Constant.REQUEST_SUCCESS, Constant.REQUEST_SUCCESS_MESSAGE, students);
     }
 
     private Map<String, Object> changeKey(Map<String, Object> map, String specialKey, Integer direction) {
@@ -44,12 +45,12 @@ public class MathematicianGraphServiceImpl implements MathematicianGraphService 
         result.put("mid", map.get("mid"));
         result.put("direction", direction);
         result.put("name", map.getOrDefault("name", ""));
-        result.put("country", map.getOrDefault("country", ""));
-        result.put("title", map.getOrDefault("title", ""));
-        result.put("year", map.getOrDefault("year", 0));
-        result.put("institution", map.getOrDefault("institution", ""));
-        result.put("dissertation", map.getOrDefault("dissertation", ""));
-        result.put("classification", map.getOrDefault("classification", ""));
+        // result.put("country", map.getOrDefault("country", ""));
+        // result.put("title", map.getOrDefault("title", ""));
+        // result.put("year", map.getOrDefault("year", 0));
+        // result.put("institution", map.getOrDefault("institution", ""));
+        // result.put("dissertation", map.getOrDefault("dissertation", ""));
+        // result.put("classification", map.getOrDefault("classification", ""));
         if (map.containsKey(specialKey)) {
             if (map.get(specialKey) instanceof List<?>) {
                 List list = (List) map.get(specialKey);

@@ -4,6 +4,9 @@ import com.orangesummer.mathgenealogy.model.vo.MathematicianVO;
 import com.orangesummer.mathgenealogy.model.vo.ResultVO;
 import org.springframework.data.domain.Page;
 
+import java.util.Collection;
+import java.util.Map;
+
 /**
  * Description:
  *
@@ -12,4 +15,12 @@ import org.springframework.data.domain.Page;
  */
 public interface MathematicianBasicService {
     ResultVO<Page<MathematicianVO>> allMathematicians(Integer page, Integer size);
+
+    ResultVO<MathematicianVO> getMathematician(Long mid);
+
+    ResultVO<Collection<Map<String, Object>>> getCountryCount();
+
+    ResultVO<Collection<Map<String, Object>>> getInstitutionCount();
+
+    ResultVO<Collection<Map<String, Object>>> getClassificationCount();
 }

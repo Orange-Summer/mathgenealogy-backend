@@ -20,7 +20,7 @@ public class MathematicianVO {
     private String institution;
     private String dissertation;
     private Integer classification;
-    private List<MathematicianVO> students;
-    private List<MathematicianVO> advisors;
+    private List<Object> students;
+    private List<Object> advisors;
 
 }

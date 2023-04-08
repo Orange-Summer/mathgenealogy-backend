@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,7 +23,7 @@ public class MathematicianGraphController {
     MathematicianGraphService mathematicianGraphService;
 
     @GetMapping("/getTree")
-    public ResultVO<List<Map<String, Object>>> getTreeByMid(@RequestParam(value = "id") Long mid, @RequestParam Long depth) {
+    public ResultVO<Map<String, Object>> getTreeByMid(@RequestParam(value = "id") Long mid, @RequestParam Long depth) {
         return mathematicianGraphService.getTreeByMid(mid, depth);
     }
 }
