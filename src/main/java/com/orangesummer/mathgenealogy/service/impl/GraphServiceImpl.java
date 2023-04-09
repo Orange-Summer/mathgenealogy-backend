@@ -1,8 +1,7 @@
 package com.orangesummer.mathgenealogy.service.impl;
 
-import com.orangesummer.mathgenealogy.mapper.MathematicianGraphRepository;
-import com.orangesummer.mathgenealogy.model.vo.ResultVO;
-import com.orangesummer.mathgenealogy.service.MathematicianGraphService;
+import com.orangesummer.mathgenealogy.mapper.GraphRepository;
+import com.orangesummer.mathgenealogy.service.GraphService;
 import com.orangesummer.mathgenealogy.util.Constant;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -16,9 +15,9 @@ import java.util.*;
  * @date Created on 2023/4/4
  */
 @Service
-public class MathematicianGraphServiceImpl implements MathematicianGraphService {
+public class GraphServiceImpl implements GraphService {
     @Resource
-    MathematicianGraphRepository mathematicianGraphRepository;
+    GraphRepository graphRepository;
 
 
     /**
@@ -27,8 +26,8 @@ public class MathematicianGraphServiceImpl implements MathematicianGraphService 
      * @return
      */
     @Override
-    public ResultVO<Map<String, Object>> getTreeByMid(Long mid, Long depth) {
-        List<Map<String, Object>> mTree = mathematicianGraphRepository.findTreeByMid(mid, depth);
+    public Map<String, Object> getTreeByMid(Long mid, Long depth) {
+        List<Map<String, Object>> mTree = graphRepository.findTreeByMid(mid, depth);
         //改变字段名
         Map<String, Object> students = changeKey(mTree.get(0), "advisorof", Constant.DIRECTION_RIGHT);
         Map<String, Object> advisors = changeKey(mTree.get(1), "studentof", Constant.DIRECTION_LEFT);
@@ -36,7 +35,7 @@ public class MathematicianGraphServiceImpl implements MathematicianGraphService 
         Collection advChildren = (Collection) advisors.get("children");
         stuChildren.addAll(advChildren);
         students.put("children",stuChildren);
-        return new ResultVO<>(Constant.REQUEST_SUCCESS, Constant.REQUEST_SUCCESS_MESSAGE, students);
+        return students;
     }
 
     private Map<String, Object> changeKey(Map<String, Object> map, String specialKey, Integer direction) {

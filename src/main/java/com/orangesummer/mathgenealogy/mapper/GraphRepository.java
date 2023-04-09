@@ -15,7 +15,7 @@ import java.util.Map;
  * @date Created on 2023/4/4
  */
 @Repository
-public interface MathematicianGraphRepository extends Neo4jRepository<Mathematician, Long> {
+public interface GraphRepository extends Neo4jRepository<Mathematician, Long> {
     @Query("""
             match p = (:Mathematician{mid::#{literal(#mid)}})-[:advisorOf*0..:#{literal(#depth)}]->(:Mathematician)
             with collect(p) as paths

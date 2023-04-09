@@ -1,7 +1,6 @@
 package com.orangesummer.mathgenealogy.controller;
 
-import com.orangesummer.mathgenealogy.model.vo.ResultVO;
-import com.orangesummer.mathgenealogy.service.MathematicianGraphService;
+import com.orangesummer.mathgenealogy.service.GraphService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,12 +17,12 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/graph")
-public class MathematicianGraphController {
+public class GraphController {
     @Resource
-    MathematicianGraphService mathematicianGraphService;
+    GraphService graphService;
 
     @GetMapping("/getTree")
-    public ResultVO<Map<String, Object>> getTreeByMid(@RequestParam(value = "id") Long mid, @RequestParam Long depth) {
-        return mathematicianGraphService.getTreeByMid(mid, depth);
+    public Map<String, Object> getTreeByMid(@RequestParam(value = "id") Long mid, @RequestParam Long depth) {
+        return graphService.getTreeByMid(mid, depth);
     }
 }

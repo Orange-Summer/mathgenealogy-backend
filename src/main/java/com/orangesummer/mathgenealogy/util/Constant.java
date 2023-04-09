@@ -1,5 +1,7 @@
 package com.orangesummer.mathgenealogy.util;
 
+import java.util.List;
+
 /**
  * Description:
  *
@@ -7,13 +9,110 @@ package com.orangesummer.mathgenealogy.util;
  * @date Created on 2023/4/3
  */
 public class Constant {
-    // 请求操作成功返回码
-    public static final Integer REQUEST_SUCCESS = 1;
-
-    public static final String REQUEST_SUCCESS_MESSAGE = "请求成功";
-    // 请求操作失败返回码
-    public static final Integer REQUEST_FAIL = 0;
     // 图中方向
     public static final Integer DIRECTION_LEFT = 1;
     public static final Integer DIRECTION_RIGHT = 2;
+
+    private static final String[] CLASSIFICATION = new String[]{
+            "General",
+            "History and biography",
+            "",
+            "Mathematical logic and foundations",
+            "This section has been deleted",
+            "Combinatorics",
+            "Order, lattices, ordered algebraic structures",
+            "",
+            "General algebraic systems",
+            "",
+            "",
+            "Number theory",
+            "Field theory and polynomials",
+            "Commutative rings and algebras",
+            "Algebraic geometry",
+            "Linear and multilinear algebra; matrix theory",
+            "Associative rings and algebras",
+            "Nonassociative rings and algebras",
+            "Category theory; homological algebra",
+            "K-theory",
+            "Group theory and generalizations",
+            "",
+            "Topological groups, Lie groups",
+            "",
+            "",
+            "",
+            "Real functions",
+            "",
+            "Measure and integration",
+            "",
+            "Functions of a complex variable",
+            "Potential theory",
+            "Several complex variables and analytic spaces",
+            "Special functions",
+            "Ordinary differential equations",
+            "Partial differential equations",
+            "",
+            "Dynamical systems and ergodic theory",
+            "",
+            "Difference and functional equations",
+            "Sequences, series, summability",
+            "Approximations and expansions",
+            "Fourier analysis",
+            "Abstract harmonic analysis",
+            "Integral transforms, operational calculus",
+            "Integral equations",
+            "Functional analysis",
+            "Operator theory",
+            "",
+            "Calculus of variations and optimal control; optimization",
+            "",
+            "Geometry",
+            "Convex and discrete geometry",
+            "Differential geometry",
+            "General topology",
+            "Algebraic topology",
+            "",
+            "Manifolds and cell complexes",
+            "Global analysis, analysis on manifolds",
+            "",
+            "Probability theory and stochastic processes",
+            "",
+            "Statistics",
+            "",
+            "",
+            "Numerical analysis",
+            "",
+            "",
+            "Computer science",
+            "",
+            "Mechanics of particles and systems",
+            "",
+            "",
+            "This section has been deleted",
+            "Mechanics of deformable solids",
+            "",
+            "Fluid mechanics",
+            "",
+            "Optics, electromagnetic theory",
+            "",
+            "Classical thermodynamics, heat transfer",
+            "Quantum theory",
+            "Statistical mechanics, structure of matter",
+            "Relativity and gravitational theory",
+            "",
+            "Astronomy and astrophysics",
+            "Geophysics",
+            "",
+            "",
+            "",
+            "Operations research, mathematical programming",
+            "Game theory, economics, social and behavioral sciences",
+            "Biology and other natural sciences",
+            "Systems theory; control",
+            "Information and communication, circuits",
+            "",
+            "",
+            "Mathematics education"
+    };
+
+    public static final List<String> CLASSIFICATIONARRAY = List.of(CLASSIFICATION);
 }

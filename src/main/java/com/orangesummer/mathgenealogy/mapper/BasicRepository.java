@@ -16,7 +16,7 @@ import java.util.List;
  * @date Created on 2023/4/3
  */
 @Repository
-public interface MathematicianBasicRepository extends Neo4jRepository<Mathematician, Long> {
+public interface BasicRepository extends Neo4jRepository<Mathematician, Long> {
     @Query("match (n:Mathematician{mid:$mid})-[:advisorOf*1..$depth]->(r:Mathematician) return r")
     List<Mathematician> findStudents(Long mid, Integer depth);
 
