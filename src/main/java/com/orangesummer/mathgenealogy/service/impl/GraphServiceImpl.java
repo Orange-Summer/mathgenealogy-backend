@@ -33,8 +33,18 @@ public class GraphServiceImpl implements GraphService {
         Map<String, Object> advisors = changeKey(mTree.get(1), "studentof", Constant.DIRECTION_LEFT);
         Collection stuChildren = (Collection) students.get("children");
         Collection advChildren = (Collection) advisors.get("children");
-        stuChildren.addAll(advChildren);
-        students.put("children",stuChildren);
+        Collection children = new ArrayList<>();
+        if (stuChildren!=null){
+            children.addAll(stuChildren);
+        }
+        if (advChildren!=null){
+            children.addAll(advChildren);
+        }
+        if (!children.isEmpty()){
+            students.put("children", children);
+        }else {
+            students.remove("children");
+        }
         return students;
     }
 

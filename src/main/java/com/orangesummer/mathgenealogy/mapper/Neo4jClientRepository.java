@@ -37,9 +37,18 @@ public class Neo4jClientRepository {
                 .query("""
                         match (n{mid:$mid})
                         with n
-                        match (n)-[:advisorOf]->(s)
-                        match (n)-[:studentOf]->(a)
-                        return n as person, collect(distinct {mid:s.mid,name:s.name}) as students, collect(distinct {mid:a.mid,name:a.name}) as advisors
+                        optional match (n)-[:advisorOf]->(s)
+                        optional match (n)-[:studentOf]->(a)
+                        with n as person, collect(distinct {mid:s.mid,name:s.name}) as students, collect(distinct {mid:a.mid,name:a.name}) as advisors
+                        return person,
+                        case
+                            when apoc.coll.contains(students,{name:NULL,mid:NULL}) then []
+                            else students
+                        end as students,
+                        case
+                            when apoc.coll.contains(advisors,{name:NULL,mid:NULL}) then []
+                            else advisors
+                        end as advisors
                         """)
                 .bind(mid).to("mid")
                 .fetchAs(MathematicianVO.class)

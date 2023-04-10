@@ -1,6 +1,7 @@
 package com.orangesummer.mathgenealogy.service;
 
 import com.orangesummer.mathgenealogy.model.vo.MathematicianVO;
+import com.orangesummer.mathgenealogy.model.vo.MathematicianFindByMid;
 import org.springframework.data.domain.Page;
 
 import java.util.Collection;
@@ -15,7 +16,7 @@ import java.util.Map;
 public interface BasicService {
     Page<MathematicianVO> allMathematicians(Integer page, Integer size);
 
-    MathematicianVO getMathematician(Long mid);
+    MathematicianFindByMid getMathematician(Long mid);
 
     Collection<Map<String, Object>> getCountryCount();
 

@@ -6,6 +6,7 @@ import com.orangesummer.mathgenealogy.mapper.Neo4jClientRepository;
 import com.orangesummer.mathgenealogy.model.mapstruct.MathematicianMapper;
 import com.orangesummer.mathgenealogy.model.po.Mathematician;
 import com.orangesummer.mathgenealogy.model.vo.MathematicianVO;
+import com.orangesummer.mathgenealogy.model.vo.MathematicianFindByMid;
 import com.orangesummer.mathgenealogy.service.BasicService;
 import com.orangesummer.mathgenealogy.util.Constant;
 import jakarta.annotation.Resource;
@@ -38,12 +39,24 @@ public class BasicServiceImpl implements BasicService {
      * @return
      */
     @Override
-    public MathematicianVO getMathematician(Long mid) {
+    public MathematicianFindByMid getMathematician(Long mid) {
         Optional<MathematicianVO> a = neo4jClientRepository.findByMid(mid);
         if (a.isEmpty()) {
             throw new APIException();
         }
-        return a.get();
+        MathematicianVO temp = a.get();
+        return new MathematicianFindByMid(
+                temp.getMid(),
+                temp.getName(),
+                temp.getCountry(),
+                temp.getTitle(),
+                temp.getYear(),
+                temp.getInstitution(),
+                temp.getDissertation(),
+                temp.getClassification() == -1 ? "" : Constant.CLASSIFICATIONARRAY.get(temp.getClassification()),
+                temp.getStudents(),
+                temp.getAdvisors()
+        );
     }
 
     /**

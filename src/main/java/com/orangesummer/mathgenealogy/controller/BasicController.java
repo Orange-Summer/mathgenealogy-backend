@@ -1,6 +1,7 @@
 package com.orangesummer.mathgenealogy.controller;
 
 import com.orangesummer.mathgenealogy.model.vo.MathematicianVO;
+import com.orangesummer.mathgenealogy.model.vo.MathematicianFindByMid;
 import com.orangesummer.mathgenealogy.service.BasicService;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
@@ -25,7 +26,7 @@ public class BasicController {
     BasicService basicService;
 
     @GetMapping("/get")
-    public MathematicianVO getMathematician(@RequestParam(value = "id") Long mid) {
+    public MathematicianFindByMid getMathematician(@RequestParam(value = "id") Long mid) {
         return basicService.getMathematician(mid);
     }
 
