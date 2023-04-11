@@ -1,8 +1,10 @@
 package com.orangesummer.mathgenealogy.service.impl;
 
+import com.orangesummer.mathgenealogy.exception.APIException;
 import com.orangesummer.mathgenealogy.mapper.GraphRepository;
 import com.orangesummer.mathgenealogy.service.GraphService;
 import com.orangesummer.mathgenealogy.util.Constant;
+import com.orangesummer.mathgenealogy.util.ResultCode;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -34,18 +36,38 @@ public class GraphServiceImpl implements GraphService {
         Collection stuChildren = (Collection) students.get("children");
         Collection advChildren = (Collection) advisors.get("children");
         Collection children = new ArrayList<>();
-        if (stuChildren!=null){
+        if (stuChildren != null) {
             children.addAll(stuChildren);
         }
-        if (advChildren!=null){
+        if (advChildren != null) {
             children.addAll(advChildren);
         }
-        if (!children.isEmpty()){
+        if (!children.isEmpty()) {
             students.put("children", children);
-        }else {
+        } else {
             students.remove("children");
         }
         return students;
+    }
+
+    @Override
+    public Map<String, Object> getStudentTreeByMid(Long mid, Long depth) {
+        List<Map<String, Object>> students = graphRepository.findStudentTreeByMid(mid, depth);
+        Map<String, Object> student = changeKey(students.get(0), "advisorof", Constant.DIRECTION_RIGHT);
+        if (student.get("children") == null) {
+            throw new APIException(ResultCode.NULL_DATA);
+        }
+        return student;
+    }
+
+    @Override
+    public Map<String, Object> getAdvisorTreeByMid(Long mid, Long depth) {
+        List<Map<String, Object>> advisors = graphRepository.findAdvisorTreeByMid(mid, depth);
+        Map<String, Object> advisor = changeKey(advisors.get(0), "studentof", Constant.DIRECTION_LEFT);
+        if (advisor.get("children") == null) {
+            throw new APIException(ResultCode.NULL_DATA);
+        }
+        return advisor;
     }
 
     private Map<String, Object> changeKey(Map<String, Object> map, String specialKey, Integer direction) {

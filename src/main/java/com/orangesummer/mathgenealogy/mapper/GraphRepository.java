@@ -17,17 +17,74 @@ import java.util.Map;
 @Repository
 public interface GraphRepository extends Neo4jRepository<Mathematician, Long> {
     @Query("""
-            match p = (:Mathematician{mid::#{literal(#mid)}})-[:advisorOf*0..:#{literal(#depth)}]->(:Mathematician)
-            with collect(p) as paths
-            call apoc.convert.toTree(paths)
+            match (m:Mathematician{mid::#{literal(#mid)}})
+            call apoc.path.spanningTree(m, {
+            	relationshipFilter: "advisorOf>",
+                minLevel: 0,
+                maxLevel: :#{literal(#depth)}
+            })
+            yield path
+            with collect(path) as pathList
+            call apoc.convert.toTree(pathList)
             yield value
             return value
             union
-            match p = (:Mathematician{mid::#{literal(#mid)}})-[:studentOf*0..:#{literal(#depth)}]->(:Mathematician)
-            with collect(p) as paths
-            call apoc.convert.toTree(paths)
+            match (m:Mathematician{mid::#{literal(#mid)}})
+            call apoc.path.spanningTree(m, {
+            	relationshipFilter: "studentOf>",
+                minLevel: 0,
+                maxLevel: :#{literal(#depth)}
+            })
+            yield path
+            with collect(path) as pathList
+            call apoc.convert.toTree(pathList)
             yield value
             return value
             """)
     List<Map<String, Object>> findTreeByMid(Long mid, Long depth);
+
+    // 可能出现重复节点
+    // @Query("""
+    //         match p = (:Mathematician{mid::#{literal(#mid)}})-[:advisorOf*0..:#{literal(#depth)}]->(:Mathematician)
+    //         with collect(p) as paths
+    //         call apoc.convert.toTree(paths)
+    //         yield value
+    //         return value
+    //         union
+    //         match p = (:Mathematician{mid::#{literal(#mid)}})-[:studentOf*0..:#{literal(#depth)}]->(:Mathematician)
+    //         with collect(p) as paths
+    //         call apoc.convert.toTree(paths)
+    //         yield value
+    //         return value
+    //         """)
+
+    @Query("""
+            match (m:Mathematician{mid::#{literal(#mid)}})
+            call apoc.path.spanningTree(m, {
+            	relationshipFilter: "advisorOf>",
+                minLevel: 0,
+                maxLevel: :#{literal(#depth)}
+            })
+            yield path
+            with collect(path) as pathList
+            call apoc.convert.toTree(pathList)
+            yield value
+            return value
+            """)
+    List<Map<String, Object>> findStudentTreeByMid(Long mid, Long depth);
+
+    @Query("""
+            match (m:Mathematician{mid::#{literal(#mid)}})
+            call apoc.path.spanningTree(m, {
+            	relationshipFilter: "studentOf>",
+                minLevel: 0,
+                maxLevel: :#{literal(#depth)}
+            })
+            yield path
+            with collect(path) as pathList
+            call apoc.convert.toTree(pathList)
+            yield value
+            return value
+            """)
+    List<Map<String, Object>> findAdvisorTreeByMid(Long mid, Long depth);
 }

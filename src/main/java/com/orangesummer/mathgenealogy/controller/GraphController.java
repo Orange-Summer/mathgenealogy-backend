@@ -25,4 +25,14 @@ public class GraphController {
     public Map<String, Object> getTreeByMid(@RequestParam(value = "id") Long mid, @RequestParam Long depth) {
         return graphService.getTreeByMid(mid, depth);
     }
+
+    @GetMapping("getStudentTree")
+    public Map<String, Object> getStudentTreeByMid(@RequestParam(value = "id") Long mid, @RequestParam Long depth) {
+        return graphService.getStudentTreeByMid(mid, depth);
+    }
+
+    @GetMapping("getAdvisorTree")
+    public Map<String, Object> getAdvisorTreeByMid(@RequestParam(value = "id") Long mid, @RequestParam Long depth) {
+        return graphService.getAdvisorTreeByMid(mid, depth);
+    }
 }

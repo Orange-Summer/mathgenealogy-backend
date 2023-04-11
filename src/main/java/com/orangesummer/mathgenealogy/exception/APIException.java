@@ -1,5 +1,6 @@
 package com.orangesummer.mathgenealogy.exception;
 
+import com.orangesummer.mathgenealogy.util.ResultCode;
 import lombok.Getter;
 
 /**
@@ -10,8 +11,8 @@ import lombok.Getter;
  */
 @Getter
 public class APIException extends RuntimeException {
-    private int code;
-    private String msg;
+    private final int code;
+    private final String msg;
 
     public APIException() {
         this(1001, "接口错误");
@@ -25,5 +26,10 @@ public class APIException extends RuntimeException {
         super(msg);
         this.code = code;
         this.msg = msg;
+    }
+
+    public APIException(ResultCode resultCode) {
+        this.code = resultCode.getCode();
+        this.msg = resultCode.getMsg();
     }
 }

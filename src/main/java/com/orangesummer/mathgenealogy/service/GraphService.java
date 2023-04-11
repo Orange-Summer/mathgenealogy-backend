@@ -10,4 +10,8 @@ import java.util.Map;
  */
 public interface GraphService {
     Map<String, Object> getTreeByMid(Long mid, Long depth);
+
+    Map<String, Object> getStudentTreeByMid(Long mid, Long depth);
+
+    Map<String, Object> getAdvisorTreeByMid(Long mid, Long depth);
 }
