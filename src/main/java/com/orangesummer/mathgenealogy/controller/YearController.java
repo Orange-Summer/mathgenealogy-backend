@@ -1,5 +1,6 @@
 package com.orangesummer.mathgenealogy.controller;
 
+import com.orangesummer.mathgenealogy.model.vo.ClassificationNumWithYearVO;
 import com.orangesummer.mathgenealogy.service.YearService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,5 +31,10 @@ public class YearController {
     @GetMapping("/getClassificationCount")
     public Collection<Map<String, Object>> getClassificationCount(@RequestParam Integer start, @RequestParam Integer end) {
         return yearService.getClassificationCount(start, end);
+    }
+
+    @GetMapping("/getClassificationCountWithYear")
+    public Collection<ClassificationNumWithYearVO> getClassificationCountWithYear(@RequestParam Integer start, @RequestParam Integer end) {
+        return yearService.getClassificationCountWithYear(start, end);
     }
 }
