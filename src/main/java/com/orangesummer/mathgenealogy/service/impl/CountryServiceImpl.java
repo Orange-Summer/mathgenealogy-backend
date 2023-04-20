@@ -6,9 +6,13 @@ import com.orangesummer.mathgenealogy.model.mapstruct.ClassificationNumMapper;
 import com.orangesummer.mathgenealogy.model.mapstruct.ClassificationNumWithYearMapper;
 import com.orangesummer.mathgenealogy.model.po.ClassificationNum;
 import com.orangesummer.mathgenealogy.model.po.ClassificationNumWithYear;
+import com.orangesummer.mathgenealogy.model.po.KnowledgeFlow;
 import com.orangesummer.mathgenealogy.model.vo.ClassificationNumVO;
 import com.orangesummer.mathgenealogy.model.vo.ClassificationNumWithYearVO;
+import com.orangesummer.mathgenealogy.model.vo.KnowledgeFlowVO;
 import com.orangesummer.mathgenealogy.service.CountryService;
+import com.orangesummer.mathgenealogy.util.Constant;
+import com.orangesummer.mathgenealogy.util.ResultCode;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +75,36 @@ public class CountryServiceImpl implements CountryService {
     public Collection<ClassificationNumWithYearVO> getSingleCountryClassificationWithYear(String country, Integer start, Integer end) {
         Collection<ClassificationNumWithYear> classificationNums = countryRepository.getSingleCountryClassificationWithYear(country, start, end);
         Collection<ClassificationNumWithYearVO> result = classificationNums.stream().map(classificationNumWithYearMapper::toClassificationNumWithYearVO).toList();
+        return result;
+    }
+
+    @Override
+    public Collection<KnowledgeFlowVO> getKnowledgeFlowOut(String country, Integer start, Integer end) {
+        Collection<KnowledgeFlow> knowledgeFlows = countryRepository.getKnowledgeFlowOut(country, start, end);
+        List<KnowledgeFlowVO> result = new ArrayList<>();
+        for (KnowledgeFlow knowledgeFlow : knowledgeFlows) {
+            if (Constant.COUNTRYLON.containsKey(knowledgeFlow.getFrom()) && Constant.COUNTRYLON.containsKey(knowledgeFlow.getTo())) {
+                result.add(new KnowledgeFlowVO(knowledgeFlow));
+            }
+        }
+        if (result.size() == 0) {
+            throw new APIException(ResultCode.NULL_DATA);
+        }
+        return result;
+    }
+
+    @Override
+    public Collection<KnowledgeFlowVO> getKnowledgeFlowIn(String country, Integer start, Integer end) {
+        Collection<KnowledgeFlow> knowledgeFlows = countryRepository.getKnowledgeFlowIn(country, start, end);
+        List<KnowledgeFlowVO> result = new ArrayList<>();
+        for (KnowledgeFlow knowledgeFlow : knowledgeFlows) {
+            if (Constant.COUNTRYLON.containsKey(knowledgeFlow.getFrom()) && Constant.COUNTRYLON.containsKey(knowledgeFlow.getTo())) {
+                result.add(new KnowledgeFlowVO(knowledgeFlow));
+            }
+        }
+        if (result.size() == 0) {
+            throw new APIException(ResultCode.NULL_DATA);
+        }
         return result;
     }
 

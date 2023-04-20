@@ -2,6 +2,7 @@ package com.orangesummer.mathgenealogy.controller;
 
 import com.orangesummer.mathgenealogy.model.vo.ClassificationNumVO;
 import com.orangesummer.mathgenealogy.model.vo.ClassificationNumWithYearVO;
+import com.orangesummer.mathgenealogy.model.vo.KnowledgeFlowVO;
 import com.orangesummer.mathgenealogy.service.CountryService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +49,16 @@ public class CountryController {
     @GetMapping("/getSingleCountryClassificationWithYear")
     Collection<ClassificationNumWithYearVO> getSingleCountryClassificationWithYear(@RequestParam String country, @RequestParam Integer start, @RequestParam Integer end) {
         return countryService.getSingleCountryClassificationWithYear(country, start, end);
+    }
+
+    @GetMapping("/getKnowledgeFlowOut")
+    public Collection<KnowledgeFlowVO> getKnowledgeFlowOut(@RequestParam String country, @RequestParam Integer start, @RequestParam Integer end) {
+        return countryService.getKnowledgeFlowOut(country, start, end);
+    }
+
+    @GetMapping("/getKnowledgeFlowIn")
+    Collection<KnowledgeFlowVO> getKnowledgeFlowIn(@RequestParam String country, @RequestParam Integer start, @RequestParam Integer end) {
+        return countryService.getKnowledgeFlowIn(country, start, end);
     }
 
 }

@@ -2,6 +2,7 @@ package com.orangesummer.mathgenealogy.service;
 
 import com.orangesummer.mathgenealogy.model.vo.ClassificationNumVO;
 import com.orangesummer.mathgenealogy.model.vo.ClassificationNumWithYearVO;
+import com.orangesummer.mathgenealogy.model.vo.KnowledgeFlowVO;
 
 import java.util.Collection;
 import java.util.Map;
@@ -21,4 +22,8 @@ public interface CountryService {
     Collection<Map<String, Object>> getCountryCountLine(String[] countries, Integer start, Integer end);
 
     Collection<ClassificationNumWithYearVO> getSingleCountryClassificationWithYear(String country, Integer start, Integer end);
+
+    Collection<KnowledgeFlowVO> getKnowledgeFlowOut(String country, Integer start, Integer end);
+
+    Collection<KnowledgeFlowVO> getKnowledgeFlowIn(String country, Integer start, Integer end);
 }

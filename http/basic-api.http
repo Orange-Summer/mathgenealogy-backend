@@ -1,1 +1,9 @@
-GET http://localhost:8080/basic/getbyid?id=35
+GET http://localhost:8080/api/country/getKnowledgeFlowOut?country=UnitedStates&start=1900&end=1950
+Accept: application/json
+
+###
+GET http://localhost:8080/api/country/getSingleCountryCountLine?country=UnitedStates&start=1900&end=1950
+Accept: application/json
+
+###
+GET http://localhost:8080/api/basic/get?id=35

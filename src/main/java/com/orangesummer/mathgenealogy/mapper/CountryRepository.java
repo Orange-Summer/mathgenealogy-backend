@@ -2,6 +2,7 @@ package com.orangesummer.mathgenealogy.mapper;
 
 import com.orangesummer.mathgenealogy.model.po.ClassificationNum;
 import com.orangesummer.mathgenealogy.model.po.ClassificationNumWithYear;
+import com.orangesummer.mathgenealogy.model.po.KnowledgeFlow;
 import jakarta.annotation.Resource;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.types.TypeSystem;
@@ -86,5 +87,58 @@ public class CountryRepository {
 
     }
 
+    public Collection<KnowledgeFlow> getKnowledgeFlowOut(String country, Integer start, Integer end) {
+        return client
+                .query("""
+                        match (m:Mathematician)-[:advisorOf]->(s)
+                        where m.country = $country
+                            and m.year >= $start
+                            and m.year <= $end
+                            and s.country is not null
+                            and apoc.node.degree(m, "advisorOf>") > 1
+                        with m, s
+                        where not exists {
+                            match (m:Mathematician)-[:advisorOf]->(s1)
+                            where m.country=s1.country
+                        } and not exists {
+                            match (s2)<-[:advisorOf]-(m:Mathematician)-[:advisorOf]->(s3)
+                            where s2.country<>s3.country
+                        }
+                        return distinct m.country as from, s.country as to
+                        """)
+                .bind(country).to("country")
+                .bind(start).to("start")
+                .bind(end).to("end")
+                .fetchAs(KnowledgeFlow.class)
+                .mappedBy((TypeSystem t, Record record) -> new KnowledgeFlow(record.get("from").asString(), record.get("to").asString()))
+                .all();
+    }
+
+    public Collection<KnowledgeFlow> getKnowledgeFlowIn(String country, Integer start, Integer end) {
+        return client
+                .query("""
+                        match (m:Mathematician)-[:advisorOf]->(s)
+                        where s.country = $country
+                            and s.year >= $start
+                            and s.year <= $end
+                            and m.country is not null
+                            and apoc.node.degree(m, "advisorOf>") > 1
+                        with m, s
+                        where not exists {
+                            match (m:Mathematician)-[:advisorOf]->(s1)
+                            where m.country=s1.country
+                        } and not exists {
+                            match (s2)<-[:advisorOf]-(m:Mathematician)-[:advisorOf]->(s3)
+                            where s2.country<>s3.country
+                        }
+                        return distinct m.country as from, s.country as to
+                        """)
+                .bind(country).to("country")
+                .bind(start).to("start")
+                .bind(end).to("end")
+                .fetchAs(KnowledgeFlow.class)
+                .mappedBy((TypeSystem t, Record record) -> new KnowledgeFlow(record.get("from").asString(), record.get("to").asString()))
+                .all();
+    }
 
 }
