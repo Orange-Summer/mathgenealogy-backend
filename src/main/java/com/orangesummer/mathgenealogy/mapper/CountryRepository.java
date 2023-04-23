@@ -23,20 +23,6 @@ public class CountryRepository {
     @Resource
     Neo4jClient client;
 
-    public Collection<String> getAllCountry() {
-        return client
-                .query("""
-                        match (m:Mathematician)
-                        where m.country is not null
-                        with m.country as country, count(*) as num
-                        return country
-                        order by num desc
-                         """)
-                .fetchAs(String.class)
-                .mappedBy((TypeSystem t, Record record) -> record.get("country").asString())
-                .all();
-    }
-
     public Collection<ClassificationNum> getSingleCountryClassification(String country, Integer start, Integer end) {
         return client
                 .query("""

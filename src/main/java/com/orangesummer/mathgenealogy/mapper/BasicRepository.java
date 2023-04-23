@@ -7,7 +7,7 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Description:
@@ -17,12 +17,24 @@ import java.util.List;
  */
 @Repository
 public interface BasicRepository extends Neo4jRepository<Mathematician, Long> {
-    @Query("match (n:Mathematician{mid:$mid})-[:advisorOf*1..$depth]->(r:Mathematician) return r")
-    List<Mathematician> findStudents(Long mid, Integer depth);
-
-    @Query("match (n:Mathematician)-[:advisorOf*1..$depth]->(r:Mathematician{mid:mid}) return n")
-    List<Mathematician> findAdvisors(Long mid, Integer depth);
-
     @Query(value = "match (m) return m order by m.mid asc skip $skip limit $limit", countQuery = "match (m) return count(m)")
     Page<Mathematician> getList(Pageable pageable);
+
+    @Query("""
+            match (m:Mathematician)
+            where m.country is not null
+            with m.country as country, count(*) as num
+            return country
+            order by num desc
+            """)
+    Collection<String> getAllCountry();
+
+    @Query("""
+            match (m:Mathematician)
+            where m.classification <> -1
+            with m.classification as classification, count(*) as num
+            return classification
+            order by num desc
+            """)
+    Collection<Long> getAllClassification();
 }

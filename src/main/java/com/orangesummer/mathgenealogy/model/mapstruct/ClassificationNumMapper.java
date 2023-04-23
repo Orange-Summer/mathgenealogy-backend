@@ -15,11 +15,14 @@ import org.mapstruct.Named;
  */
 @Mapper(componentModel = "spring")
 public interface ClassificationNumMapper {
-    @Mapping(source = "classificationId", target = "classification",qualifiedByName = "idToClassification")
+    @Mapping(source = "classificationId", target = "classification", qualifiedByName = "idToClassification")
     ClassificationNumVO toClassificationNumVO(ClassificationNum classificationNum);
 
     @Named("idToClassification")
     default String idToClassification(Integer classificationId) {
+        if (classificationId == -1) {
+            return "";
+        }
         return Constant.CLASSIFICATIONARRAY.get(classificationId);
     }
 }

@@ -4,9 +4,12 @@ import com.orangesummer.mathgenealogy.exception.APIException;
 import com.orangesummer.mathgenealogy.mapper.BasicRepository;
 import com.orangesummer.mathgenealogy.mapper.Neo4jClientRepository;
 import com.orangesummer.mathgenealogy.model.mapstruct.MathematicianMapper;
+import com.orangesummer.mathgenealogy.model.mapstruct.RankingMapper;
 import com.orangesummer.mathgenealogy.model.po.Mathematician;
-import com.orangesummer.mathgenealogy.model.vo.MathematicianVO;
+import com.orangesummer.mathgenealogy.model.po.Ranking;
 import com.orangesummer.mathgenealogy.model.vo.MathematicianFindByMid;
+import com.orangesummer.mathgenealogy.model.vo.MathematicianVO;
+import com.orangesummer.mathgenealogy.model.vo.RankingVO;
 import com.orangesummer.mathgenealogy.service.BasicService;
 import com.orangesummer.mathgenealogy.util.Constant;
 import jakarta.annotation.Resource;
@@ -31,6 +34,8 @@ public class BasicServiceImpl implements BasicService {
     Neo4jClientRepository neo4jClientRepository;
     @Resource
     MathematicianMapper mathematicianMapper;
+    @Resource
+    RankingMapper rankingMapper;
 
     /**
      * 获取数学家个人信息
@@ -106,5 +111,75 @@ public class BasicServiceImpl implements BasicService {
             result.add(newMap);
         }
         return result;
+    }
+
+    @Override
+    public Collection<String> getAllCountry() {
+        return basicRepository.getAllCountry();
+    }
+
+    @Override
+    public Collection<String> getAllClassification() {
+        Collection<Long> classificationIds = basicRepository.getAllClassification();
+        Collection<String> result = new ArrayList<>();
+        for (Long classificationId : classificationIds) {
+            result.add(Constant.CLASSIFICATIONARRAY.get(Math.toIntExact(classificationId)));
+        }
+        return result;
+    }
+
+    @Override
+    public Collection<RankingVO> getRanking(String[] countries, String[] classifications, Integer start, Integer end, Integer limit) {
+        String country, classification, year;
+        if (countries.length == 1) {
+            if (Objects.equals(countries[0], "all")) {
+                country = "";
+            } else {
+                country = "m.country = " + "\"" + countries[0] + "\"";
+            }
+        } else {
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            for (int i = 0; i < countries.length; i++) {
+                if (i < countries.length - 1) {
+                    sb.append("\"").append(countries[i]).append("\"").append(",");
+                } else {
+                    sb.append("\"").append(countries[i]).append("\"");
+                }
+            }
+            sb.append("]");
+            country = "m.country in " + sb;
+        }
+        if (classifications.length == 1) {
+            if (Objects.equals(classifications[0], "all")) {
+                classification = "";
+            } else {
+                classification = "m.classification = " + Constant.CLASSIFICATIONARRAY.indexOf(classifications[0]);
+            }
+        } else {
+            ArrayList<Integer> temp = new ArrayList<>();
+            for (String a : classifications) {
+                temp.add(Constant.CLASSIFICATIONARRAY.indexOf(a));
+            }
+            classification = "m.classification in " + temp;
+        }
+        year = "m.year >= " + start + " and " + "m.year <= " + end;
+        StringBuilder query = new StringBuilder("match (m:Mathematician)-[:advisorOf*1..]->(s:Mathematician) where ");
+        if (!country.isBlank()) {
+            query.append(country).append(" and ");
+        }
+        if (!classification.isBlank()) {
+            query.append(classification).append(" and ");
+        }
+        query.append(year)
+                .append("""
+                         return m.mid as mid, m.name as name, m.country as country, m.classification as classificationId, m.year as year, count(distinct s) as descendants
+                        order by descendants desc
+                        limit
+                        """)
+                .append(" ")
+                .append(limit);
+        Collection<Ranking> rankings = neo4jClientRepository.getRanking(query.toString());
+        return rankings.stream().map(rankingMapper::toRankingVO).toList();
     }
 }

@@ -25,11 +25,6 @@ public class CountryController {
     @Resource
     CountryService countryService;
 
-    @GetMapping("/getAllCountry")
-    public Collection<String> getAllCountry() {
-        return countryService.getAllCountry();
-    }
-
     @GetMapping("/getSingleCountryClassification")
     public Collection<ClassificationNumVO> getSingleCountryClassification(@RequestParam String country, @RequestParam Integer start, @RequestParam Integer end) {
         return countryService.getSingleCountryClassification(country, start, end);

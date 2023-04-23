@@ -43,7 +43,7 @@ public interface GraphRepository extends Neo4jRepository<Mathematician, Long> {
             """)
     List<Map<String, Object>> findTreeByMid(Long mid, Long depth);
 
-    // 可能出现重复节点
+    // 这种查询可能出现重复节点
     // @Query("""
     //         match p = (:Mathematician{mid::#{literal(#mid)}})-[:advisorOf*0..:#{literal(#depth)}]->(:Mathematician)
     //         with collect(p) as paths

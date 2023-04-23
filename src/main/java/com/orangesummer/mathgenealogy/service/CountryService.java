@@ -15,8 +15,6 @@ import java.util.Map;
  */
 public interface CountryService {
 
-    Collection<String> getAllCountry();
-
     Collection<ClassificationNumVO> getSingleCountryClassification(String country, Integer start, Integer end);
 
     Collection<Map<String, Object>> getCountryCountLine(String[] countries, Integer start, Integer end);

@@ -2,6 +2,7 @@ package com.orangesummer.mathgenealogy.mapper;
 
 import com.orangesummer.mathgenealogy.model.mapstruct.MathematicianMapper;
 import com.orangesummer.mathgenealogy.model.po.Mathematician;
+import com.orangesummer.mathgenealogy.model.po.Ranking;
 import com.orangesummer.mathgenealogy.model.vo.MathematicianVO;
 import jakarta.annotation.Resource;
 import org.neo4j.driver.Record;
@@ -95,6 +96,14 @@ public class Neo4jClientRepository {
                         limit 25
                         """)
                 .fetch()
+                .all();
+    }
+
+    public Collection<Ranking> getRanking(String query) {
+        return client
+                .query(query)
+                .fetchAs(Ranking.class)
+                .mappedBy((TypeSystem t, Record record) -> new Ranking(record.get("mid").asLong(), record.get("name").asString(), record.get("country").asString(), record.get("classificationId").asInt(), record.get("year").asInt(), record.get("descendants").asInt()))
                 .all();
     }
 
