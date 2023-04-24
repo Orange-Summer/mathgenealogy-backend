@@ -3,6 +3,7 @@ package com.orangesummer.mathgenealogy.mapper;
 import com.orangesummer.mathgenealogy.model.mapstruct.MathematicianMapper;
 import com.orangesummer.mathgenealogy.model.po.Mathematician;
 import com.orangesummer.mathgenealogy.model.po.Ranking;
+import com.orangesummer.mathgenealogy.model.po.SameClassificationPercentage;
 import com.orangesummer.mathgenealogy.model.vo.MathematicianVO;
 import jakarta.annotation.Resource;
 import org.neo4j.driver.Record;
@@ -104,6 +105,22 @@ public class Neo4jClientRepository {
                 .query(query)
                 .fetchAs(Ranking.class)
                 .mappedBy((TypeSystem t, Record record) -> new Ranking(record.get("mid").asLong(), record.get("name").asString(), record.get("country").asString(), record.get("classificationId").asInt(), record.get("year").asInt(), record.get("descendants").asInt()))
+                .all();
+    }
+
+    public Collection<SameClassificationPercentage> getSameClassificationPercentage() {
+        return client
+                .query("""
+                        match (m1:Mathematician)-[a1:advisorOf]->(s1:Mathematician)
+                        with m1.classification as classification, count(a1) as total
+                        match (m2:Mathematician)-[a2:advisorOf]->(s2:Mathematician)
+                        where m2.classification = classification and m2.classification = s2.classification
+                        with m2.classification as classification, count(a2) as different, total
+                        return classification, toFloat(different)/toFloat(total) as percent
+                        order by classification
+                        """)
+                .fetchAs(SameClassificationPercentage.class)
+                .mappedBy((TypeSystem t, Record record) -> new SameClassificationPercentage(record.get("classification").asInt(), record.get("percent").asDouble()))
                 .all();
     }
 
