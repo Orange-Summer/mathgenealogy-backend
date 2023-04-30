@@ -22,6 +22,7 @@ public class MathematicianFindByMid {
     private String institution;
     private String dissertation;
     private String classification;
+    private Integer descendant;
     private List<Object> students;
     private List<Object> advisors;
 

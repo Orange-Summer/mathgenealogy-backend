@@ -41,14 +41,14 @@ public class Neo4jClientRepository {
                         with n
                         optional match (n)-[:advisorOf]->(s)
                         optional match (n)-[:studentOf]->(a)
-                        with n as person, collect(distinct {mid:s.mid,name:s.name}) as students, collect(distinct {mid:a.mid,name:a.name}) as advisors
+                        with n as person, collect(distinct {mid:s.mid, name:s.name, descendant:s.descendant}) as students, collect(distinct {mid:a.mid, name:a.name, descendant:a.descendant}) as advisors
                         return person,
                         case
-                            when apoc.coll.contains(students,{name:NULL,mid:NULL}) then []
+                            when apoc.coll.contains(students,{name:null, mid:null, descendant:null}) then []
                             else students
                         end as students,
                         case
-                            when apoc.coll.contains(advisors,{name:NULL,mid:NULL}) then []
+                            when apoc.coll.contains(advisors,{name:null, mid:null, descendant:null}) then []
                             else advisors
                         end as advisors
                         """)
@@ -104,7 +104,28 @@ public class Neo4jClientRepository {
         return client
                 .query(query)
                 .fetchAs(Ranking.class)
-                .mappedBy((TypeSystem t, Record record) -> new Ranking(record.get("mid").asLong(), record.get("name").asString(), record.get("country").asString(), record.get("classificationId").asInt(), record.get("year").asInt(), record.get("descendants").asInt()))
+                .mappedBy((TypeSystem t, Record record) -> new Ranking(
+                        record.get("mid").asLong(-1),
+                        record.get("name").asString(""),
+                        record.get("country").asString(""),
+                        record.get("classificationId").asInt(-1),
+                        record.get("year").asInt(-1),
+                        record.get("descendants").asInt(0),
+                        record.get("students").asList(v -> new Ranking(
+                                v.get("mid").asLong(-1),
+                                v.get("name").asString(""),
+                                v.get("country").asString(""),
+                                v.get("classificationId").asInt(-1),
+                                v.get("year").asInt(-1),
+                                v.get("descendants").asInt(0), null, null)),
+                        record.get("advisors").asList(v -> new Ranking(
+                                v.get("mid").asLong(-1),
+                                v.get("name").asString(""),
+                                v.get("country").asString(""),
+                                v.get("classificationId").asInt(-1),
+                                v.get("year").asInt(-1),
+                                v.get("descendants").asInt(0), null, null))
+                ))
                 .all();
     }
 

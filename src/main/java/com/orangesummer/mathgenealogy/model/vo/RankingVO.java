@@ -2,6 +2,8 @@ package com.orangesummer.mathgenealogy.model.vo;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * Description:
  *
@@ -16,4 +18,6 @@ public class RankingVO {
     String classification;
     Integer year;
     Integer descendants;
+    List<RankingVO> students;
+    List<RankingVO> advisors;
 }

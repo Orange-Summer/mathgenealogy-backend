@@ -2,11 +2,11 @@ GET http://localhost:8080/api/basic/getSameClassificationPercentage
 Accept: application/json
 
 ###
-GET http://localhost:8080/api/basic/getRanking?countries=all&classifications=Computer science&start=1900&end=2022&limit=12
+GET http://localhost:8080/api/basic/getRanking?countries=all&classifications=all&start=1600&end=2022&limit=12
 Accept: application/json
 
 ###
-GET http://localhost:8080/api/basic/getRanking?countries=UnitedStates&countries=China&classifications=Computer science&start=1900&end=2022&limit=12
+GET http://localhost:8080/api/basic/getRanking?countries=UnitedStates&classifications=Computer science&start=1950&end=2000&limit=100
 Accept: application/json
 
 ###

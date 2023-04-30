@@ -3,6 +3,8 @@ package com.orangesummer.mathgenealogy.model.po;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * Description:
  *
@@ -18,4 +20,6 @@ public class Ranking {
     Integer classificationId;
     Integer year;
     Integer descendants;
+    List<Ranking> students;
+    List<Ranking> advisors;
 }

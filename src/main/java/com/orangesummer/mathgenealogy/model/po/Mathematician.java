@@ -7,7 +7,6 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,9 +36,11 @@ public class Mathematician {
     private final String dissertation;
     @Property("classification")
     private final Integer classification;
+    @Property("descendant")
+    private final Integer descendant;
     @Relationship(type = "advisorOf", direction = Relationship.Direction.OUTGOING)
-    private List<Mathematician> students = new ArrayList<>();
+    private List<Mathematician> students;
     @Relationship(type = "studentOf", direction = Relationship.Direction.INCOMING)
-    private List<Mathematician> advisors = new ArrayList<>();
+    private List<Mathematician> advisors;
 
 }

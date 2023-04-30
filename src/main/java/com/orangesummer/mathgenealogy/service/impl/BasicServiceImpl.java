@@ -64,6 +64,7 @@ public class BasicServiceImpl implements BasicService {
                 temp.getInstitution(),
                 temp.getDissertation(),
                 temp.getClassification() == -1 ? "" : Constant.CLASSIFICATIONARRAY.get(temp.getClassification()),
+                temp.getDescendant(),
                 temp.getStudents(),
                 temp.getAdvisors()
         );
@@ -169,7 +170,7 @@ public class BasicServiceImpl implements BasicService {
             classification = "m.classification in " + temp;
         }
         year = "m.year >= " + start + " and " + "m.year <= " + end;
-        StringBuilder query = new StringBuilder("match (m:Mathematician)-[:advisorOf*1..]->(s:Mathematician) where ");
+        StringBuilder query = new StringBuilder("match (m:Mathematician) where ");
         if (!country.isBlank()) {
             query.append(country).append(" and ");
         }
@@ -177,13 +178,27 @@ public class BasicServiceImpl implements BasicService {
             query.append(classification).append(" and ");
         }
         query.append(year)
+                .append(" and m.descendant is not null ")
                 .append("""
-                         return m.mid as mid, m.name as name, m.country as country, m.classification as classificationId, m.year as year, count(distinct s) as descendants
-                        order by descendants desc
-                        limit
-                        """)
+                        with m
+                        order by m.descendant desc
+                        limit""")
                 .append(" ")
-                .append(limit);
+                .append(limit)
+                .append("""
+                         optional match (m)-[:advisorOf]->(s:Mathematician)
+                        optional match (m)-[:studentOf]->(a:Mathematician)
+                        with m,
+                             case
+                                 when count(s)=0 then []
+                                 else collect(distinct {mid:s.mid, name:s.name, country:s.country, classificationId:s.classification, year:s.year, descendants:s.descendant})
+                             end as students,
+                             case
+                                 when count(a)=0 then []
+                                 else collect(distinct {mid:a.mid, name:a.name, country:a.country, classificationId:a.classification, year:a.year, descendants:a.descendant})
+                             end as advisors
+                        return m.mid as mid, m.name as name, m.country as country, m.classification as classificationId, m.year as year, m.descendant as descendants, students, advisors
+                        """);
         Collection<Ranking> rankings = neo4jClientRepository.getRanking(query.toString());
         return rankings.stream().map(rankingMapper::toRankingVO).toList();
     }
