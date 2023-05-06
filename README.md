@@ -24,6 +24,13 @@
    ```
 
    ```cypher
+   create index country_index for (m:Mathematician) on (m.country);
+   create index mid_index for (m:Mathematician) on (m.mid);
+   create index year_index for (m:Mathematician) on (m.year);
+   create text index text_name_index for (m:Mathematician) on (m.name);
+   ```
+
+   ```cypher
    :auto
    load csv with headers from "file:///advisor.csv" as line
    call{
@@ -33,6 +40,17 @@
        match (to:Mathematician{mid:toInteger(line.aid)})
        merge (to)-[:advisorOf]->(from)
        merge (from)-[:studentOf]->(to)
+   } in transactions
+   ```
+
+   ```cypher
+   :auto
+   match (m:Mathematician)
+   call{
+       with m
+       match (m)-[:advisorOf*1..]->(s:Mathematician)
+       with m, count(distinct s) as num
+       set m.descendant = num
    } in transactions
    ```
 
