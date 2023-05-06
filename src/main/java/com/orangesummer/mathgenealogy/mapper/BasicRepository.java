@@ -18,7 +18,7 @@ import java.util.Collection;
 @Repository
 public interface BasicRepository extends Neo4jRepository<Mathematician, Long> {
     @Query(value = "match (m) return m order by m.mid asc skip $skip limit $limit", countQuery = "match (m) return count(m)")
-    Page<Mathematician> getList(Pageable pageable);
+    Page<Mathematician> findList(Pageable pageable);
 
     @Query("""
             match (m:Mathematician)
@@ -27,7 +27,7 @@ public interface BasicRepository extends Neo4jRepository<Mathematician, Long> {
             return country
             order by num desc
             """)
-    Collection<String> getAllCountry();
+    Collection<String> findAllCountry();
 
     @Query("""
             match (m:Mathematician)
@@ -36,5 +36,5 @@ public interface BasicRepository extends Neo4jRepository<Mathematician, Long> {
             return classification
             order by num desc
             """)
-    Collection<Long> getAllClassification();
+    Collection<Long> findAllClassification();
 }

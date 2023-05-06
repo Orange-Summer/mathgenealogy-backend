@@ -65,7 +65,7 @@ public class Neo4jClientRepositoryImpl implements Neo4jClientRepository {
     }
 
     @Override
-    public Collection<Map<String, Object>> getCountryCount() {
+    public Collection<Map<String, Object>> countByAllCountry() {
         return client
                 .query("""
                         match (r)
@@ -78,7 +78,7 @@ public class Neo4jClientRepositoryImpl implements Neo4jClientRepository {
     }
 
     @Override
-    public Collection<Map<String, Object>> getInstitutionCount() {
+    public Collection<Map<String, Object>> countByAllInstitution() {
         return client
                 .query("""
                         match (r)
@@ -92,7 +92,7 @@ public class Neo4jClientRepositoryImpl implements Neo4jClientRepository {
     }
 
     @Override
-    public Collection<Map<String, Object>> getClassificationCount() {
+    public Collection<Map<String, Object>> countByAllClassification() {
         return client
                 .query("""
                         match (r)
@@ -106,7 +106,7 @@ public class Neo4jClientRepositoryImpl implements Neo4jClientRepository {
     }
 
     @Override
-    public Collection<Ranking> getRanking(String query) {
+    public Collection<Ranking> findTopByDescendant(String query) {
         return client
                 .query(query)
                 .fetchAs(Ranking.class)
@@ -136,7 +136,7 @@ public class Neo4jClientRepositoryImpl implements Neo4jClientRepository {
     }
 
     @Override
-    public Collection<SameClassificationPercentage> getSameClassificationPercentage() {
+    public Collection<SameClassificationPercentage> getSameClassificationPercentageList() {
         return client
                 .query("""
                         match (m1:Mathematician)-[a1:advisorOf]->(s1:Mathematician)

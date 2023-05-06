@@ -25,7 +25,7 @@ public class CountryRepositoryImpl implements CountryRepository {
     Neo4jClient client;
 
     @Override
-    public Collection<ClassificationNum> getSingleCountryClassification(String country, Integer start, Integer end) {
+    public Collection<ClassificationNum> countByCountryAndAllClassificationAndYearRange(String country, Integer start, Integer end) {
         return client
                 .query("""
                         match (m:Mathematician{country:$country})
@@ -43,7 +43,7 @@ public class CountryRepositoryImpl implements CountryRepository {
     }
 
     @Override
-    public Collection<Map<String, Object>> getSingleCountryCount(String country, Integer start, Integer end) {
+    public Collection<Map<String, Object>> countByCountryAndYearRangeWithYear(String country, Integer start, Integer end) {
         return client
                 .query("""
                         match (m:Mathematician{country:$country})
@@ -60,7 +60,7 @@ public class CountryRepositoryImpl implements CountryRepository {
     }
 
     @Override
-    public Collection<ClassificationNumWithYear> getSingleCountryClassificationWithYear(String country, Integer start, Integer end) {
+    public Collection<ClassificationNumWithYear> countByCountryAndAllClassificationAndYearRangeWithYear(String country, Integer start, Integer end) {
         return client
                 .query("""
                         match (m:Mathematician{country:$country})
@@ -78,7 +78,7 @@ public class CountryRepositoryImpl implements CountryRepository {
     }
 
     @Override
-    public Collection<KnowledgeFlow> getKnowledgeFlowOut(String country, Integer start, Integer end) {
+    public Collection<KnowledgeFlow> findKnowledgeFlowOut(String country, Integer start, Integer end) {
         return client
                 .query("""
                         match (m:Mathematician)-[:advisorOf]->(s)
@@ -106,7 +106,7 @@ public class CountryRepositoryImpl implements CountryRepository {
     }
 
     @Override
-    public Collection<KnowledgeFlow> getKnowledgeFlowIn(String country, Integer start, Integer end) {
+    public Collection<KnowledgeFlow> findKnowledgeFlowIn(String country, Integer start, Integer end) {
         return client
                 .query("""
                         match (m:Mathematician)-[:advisorOf]->(s)

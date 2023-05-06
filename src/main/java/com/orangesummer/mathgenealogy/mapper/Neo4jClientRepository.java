@@ -19,14 +19,14 @@ import java.util.Optional;
 public interface Neo4jClientRepository {
     Optional<MathematicianVO> findByMid(Long mid);
 
-    Collection<Map<String, Object>> getCountryCount();
+    Collection<Map<String, Object>> countByAllCountry();
 
-    Collection<Map<String, Object>> getInstitutionCount();
+    Collection<Map<String, Object>> countByAllInstitution();
 
-    Collection<Map<String, Object>> getClassificationCount();
+    Collection<Map<String, Object>> countByAllClassification();
 
-    Collection<Ranking> getRanking(String query);
+    Collection<Ranking> findTopByDescendant(String query);
 
-    Collection<SameClassificationPercentage> getSameClassificationPercentage();
+    Collection<SameClassificationPercentage> getSameClassificationPercentageList();
 
 }

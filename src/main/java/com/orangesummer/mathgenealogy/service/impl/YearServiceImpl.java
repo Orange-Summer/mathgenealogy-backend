@@ -33,7 +33,7 @@ public class YearServiceImpl implements YearService {
      */
     @Override
     public Collection<Map<String, Object>> getCountryCount(Integer start, Integer end) {
-        Collection<Map<String, Object>> maps = yearRepository.getCountryCount(start, end);
+        Collection<Map<String, Object>> maps = yearRepository.countByAllCountryAndYearRange(start, end);
         if (maps == null || maps.isEmpty()) {
             throw new APIException();
         }
@@ -48,7 +48,7 @@ public class YearServiceImpl implements YearService {
      */
     @Override
     public Collection<Map<String, Object>> getClassificationCount(Integer start, Integer end) {
-        Collection<Map<String, Object>> maps = yearRepository.getClassificationCount(start, end);
+        Collection<Map<String, Object>> maps = yearRepository.countByAllClassificationAndYearRange(start, end);
         if (maps == null || maps.isEmpty()) {
             throw new APIException();
         }
@@ -68,7 +68,7 @@ public class YearServiceImpl implements YearService {
 
     @Override
     public Collection<ClassificationNumWithYearVO> getClassificationCountWithYear(Integer start, Integer end) {
-        Collection<ClassificationNumWithYear> classificationNums = yearRepository.getClassificationCountWithYear(start, end);
+        Collection<ClassificationNumWithYear> classificationNums = yearRepository.countByAllClassificationAndYearRangeWithYear(start, end);
         Collection<ClassificationNumWithYearVO> result = classificationNums.stream().map(classificationNumWithYearMapper::toClassificationNumWithYearVO).toList();
         return result;
     }

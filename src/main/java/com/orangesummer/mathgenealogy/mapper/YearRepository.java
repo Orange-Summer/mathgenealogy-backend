@@ -14,9 +14,9 @@ import java.util.Map;
  */
 @Repository
 public interface YearRepository {
-    Collection<Map<String, Object>> getCountryCount(Integer start, Integer end);
+    Collection<Map<String, Object>> countByAllCountryAndYearRange(Integer start, Integer end);
 
-    Collection<Map<String, Object>> getClassificationCount(Integer start, Integer end);
+    Collection<Map<String, Object>> countByAllClassificationAndYearRange(Integer start, Integer end);
 
-    Collection<ClassificationNumWithYear> getClassificationCountWithYear(Integer start, Integer end);
+    Collection<ClassificationNumWithYear> countByAllClassificationAndYearRangeWithYear(Integer start, Integer end);
 }

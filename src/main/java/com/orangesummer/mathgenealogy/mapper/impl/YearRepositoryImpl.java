@@ -23,7 +23,7 @@ public class YearRepositoryImpl implements YearRepository {
     Neo4jClient client;
 
     @Override
-    public Collection<Map<String, Object>> getCountryCount(Integer start, Integer end) {
+    public Collection<Map<String, Object>> countByAllCountryAndYearRange(Integer start, Integer end) {
         return client
                 .query("""
                         match (m:Mathematician)
@@ -39,7 +39,7 @@ public class YearRepositoryImpl implements YearRepository {
     }
 
     @Override
-    public Collection<Map<String, Object>> getClassificationCount(Integer start, Integer end) {
+    public Collection<Map<String, Object>> countByAllClassificationAndYearRange(Integer start, Integer end) {
         return client
                 .query("""
                         match (m:Mathematician)
@@ -55,7 +55,7 @@ public class YearRepositoryImpl implements YearRepository {
     }
 
     @Override
-    public Collection<ClassificationNumWithYear> getClassificationCountWithYear(Integer start, Integer end) {
+    public Collection<ClassificationNumWithYear> countByAllClassificationAndYearRangeWithYear(Integer start, Integer end) {
         return client
                 .query("""
                         match (m:Mathematician)

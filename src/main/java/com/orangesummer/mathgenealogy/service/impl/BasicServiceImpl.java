@@ -80,13 +80,13 @@ public class BasicServiceImpl implements BasicService {
     @Override
     public Page<MathematicianVO> allMathematicians(Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Mathematician> page1 = basicRepository.getList(pageable);
+        Page<Mathematician> page1 = basicRepository.findList(pageable);
         return page1.map(mathematicianMapper::toMathematicianVO);
     }
 
     @Override
     public Collection<Map<String, Object>> getCountryCount() {
-        Collection<Map<String, Object>> maps = neo4jClientRepository.getCountryCount();
+        Collection<Map<String, Object>> maps = neo4jClientRepository.countByAllCountry();
         if (maps == null || maps.isEmpty()) {
             throw new APIException();
         }
@@ -95,7 +95,7 @@ public class BasicServiceImpl implements BasicService {
 
     @Override
     public Collection<Map<String, Object>> getInstitutionCount() {
-        Collection<Map<String, Object>> maps = neo4jClientRepository.getInstitutionCount();
+        Collection<Map<String, Object>> maps = neo4jClientRepository.countByAllInstitution();
         if (maps == null || maps.isEmpty()) {
             throw new APIException();
         }
@@ -104,7 +104,7 @@ public class BasicServiceImpl implements BasicService {
 
     @Override
     public Collection<Map<String, Object>> getClassificationCount() {
-        Collection<Map<String, Object>> maps = neo4jClientRepository.getClassificationCount();
+        Collection<Map<String, Object>> maps = neo4jClientRepository.countByAllClassification();
         List<Map<String, Object>> result = new ArrayList<>();
         for (Map<String, Object> temp : maps) {
             Map<String, Object> newMap = new HashMap<>(temp);
@@ -121,12 +121,12 @@ public class BasicServiceImpl implements BasicService {
 
     @Override
     public Collection<String> getAllCountry() {
-        return basicRepository.getAllCountry();
+        return basicRepository.findAllCountry();
     }
 
     @Override
     public Collection<String> getAllClassification() {
-        Collection<Long> classificationIds = basicRepository.getAllClassification();
+        Collection<Long> classificationIds = basicRepository.findAllClassification();
         Collection<String> result = new ArrayList<>();
         for (Long classificationId : classificationIds) {
             result.add(Constant.CLASSIFICATIONARRAY.get(Math.toIntExact(classificationId)));
@@ -199,13 +199,13 @@ public class BasicServiceImpl implements BasicService {
                              end as advisors
                         return m.mid as mid, m.name as name, m.country as country, m.classification as classificationId, m.year as year, m.descendant as descendants, students, advisors
                         """);
-        Collection<Ranking> rankings = neo4jClientRepository.getRanking(query.toString());
+        Collection<Ranking> rankings = neo4jClientRepository.findTopByDescendant(query.toString());
         return rankings.stream().map(rankingMapper::toRankingVO).toList();
     }
 
     @Override
     public Collection<SameClassificationPercentageVO> getSameClassificationPercentage() {
-        Collection<SameClassificationPercentage> list = neo4jClientRepository.getSameClassificationPercentage();
+        Collection<SameClassificationPercentage> list = neo4jClientRepository.getSameClassificationPercentageList();
         return list.stream().map(sameClassificationPercentageMapper::toSameClassificationPercentageVO).toList();
     }
 }

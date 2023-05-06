@@ -38,7 +38,7 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public Collection<ClassificationNumVO> getSingleCountryClassification(String country, Integer start, Integer end) {
-        Collection<ClassificationNum> classificationNums = countryRepository.getSingleCountryClassification(country, start, end);
+        Collection<ClassificationNum> classificationNums = countryRepository.countByCountryAndAllClassificationAndYearRange(country, start, end);
         return classificationNums.stream().map(classificationNumMapper::toClassificationNumVO).toList();
     }
 
@@ -47,21 +47,21 @@ public class CountryServiceImpl implements CountryService {
         if (countries.length > 1) {
             List<Map<String, Object>> result = new ArrayList<>();
             for (String country : countries) {
-                Collection<Map<String, Object>> temp = countryRepository.getSingleCountryCount(country, start, end);
+                Collection<Map<String, Object>> temp = countryRepository.countByCountryAndYearRangeWithYear(country, start, end);
                 result.addAll(temp);
             }
             return result;
         } else if (countries.length == 1) {
             if (Objects.equals(countries[0], "all")) {
-                Collection<String> countryList = basicRepository.getAllCountry();
+                Collection<String> countryList = basicRepository.findAllCountry();
                 List<Map<String, Object>> result = new ArrayList<>();
                 for (String country : countryList) {
-                    Collection<Map<String, Object>> temp = countryRepository.getSingleCountryCount(country, start, end);
+                    Collection<Map<String, Object>> temp = countryRepository.countByCountryAndYearRangeWithYear(country, start, end);
                     result.addAll(temp);
                 }
                 return result;
             } else {
-                return countryRepository.getSingleCountryCount(countries[0], start, end);
+                return countryRepository.countByCountryAndYearRangeWithYear(countries[0], start, end);
             }
         } else {
             throw new APIException();
@@ -70,13 +70,13 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public Collection<ClassificationNumWithYearVO> getSingleCountryClassificationWithYear(String country, Integer start, Integer end) {
-        Collection<ClassificationNumWithYear> classificationNums = countryRepository.getSingleCountryClassificationWithYear(country, start, end);
+        Collection<ClassificationNumWithYear> classificationNums = countryRepository.countByCountryAndAllClassificationAndYearRangeWithYear(country, start, end);
         return classificationNums.stream().map(classificationNumWithYearMapper::toClassificationNumWithYearVO).toList();
     }
 
     @Override
     public Collection<KnowledgeFlowVO> getKnowledgeFlowOut(String country, Integer start, Integer end) {
-        Collection<KnowledgeFlow> knowledgeFlows = countryRepository.getKnowledgeFlowOut(country, start, end);
+        Collection<KnowledgeFlow> knowledgeFlows = countryRepository.findKnowledgeFlowOut(country, start, end);
         List<KnowledgeFlowVO> result = new ArrayList<>();
         for (KnowledgeFlow knowledgeFlow : knowledgeFlows) {
             if (Constant.COUNTRYLON.containsKey(knowledgeFlow.getFrom()) && Constant.COUNTRYLON.containsKey(knowledgeFlow.getTo())) {
@@ -91,7 +91,7 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public Collection<KnowledgeFlowVO> getKnowledgeFlowIn(String country, Integer start, Integer end) {
-        Collection<KnowledgeFlow> knowledgeFlows = countryRepository.getKnowledgeFlowIn(country, start, end);
+        Collection<KnowledgeFlow> knowledgeFlows = countryRepository.findKnowledgeFlowIn(country, start, end);
         List<KnowledgeFlowVO> result = new ArrayList<>();
         for (KnowledgeFlow knowledgeFlow : knowledgeFlows) {
             if (Constant.COUNTRYLON.containsKey(knowledgeFlow.getFrom()) && Constant.COUNTRYLON.containsKey(knowledgeFlow.getTo())) {

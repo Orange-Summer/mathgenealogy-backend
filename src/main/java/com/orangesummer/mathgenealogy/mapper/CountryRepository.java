@@ -16,14 +16,14 @@ import java.util.Map;
  */
 @Repository
 public interface CountryRepository {
-    Collection<ClassificationNum> getSingleCountryClassification(String country, Integer start, Integer end);
+    Collection<ClassificationNum> countByCountryAndAllClassificationAndYearRange(String country, Integer start, Integer end);
 
-    Collection<Map<String, Object>> getSingleCountryCount(String country, Integer start, Integer end);
+    Collection<Map<String, Object>> countByCountryAndYearRangeWithYear(String country, Integer start, Integer end);
 
-    Collection<ClassificationNumWithYear> getSingleCountryClassificationWithYear(String country, Integer start, Integer end);
+    Collection<ClassificationNumWithYear> countByCountryAndAllClassificationAndYearRangeWithYear(String country, Integer start, Integer end);
 
-    Collection<KnowledgeFlow> getKnowledgeFlowOut(String country, Integer start, Integer end);
+    Collection<KnowledgeFlow> findKnowledgeFlowOut(String country, Integer start, Integer end);
 
-    Collection<KnowledgeFlow> getKnowledgeFlowIn(String country, Integer start, Integer end);
+    Collection<KnowledgeFlow> findKnowledgeFlowIn(String country, Integer start, Integer end);
 
 }
