@@ -1,3 +1,11 @@
+GET http://localhost:8080/api/basic/getCountryCount
+Accept: application/json
+
+###
+GET http://localhost:8080/api/basic/getAverage
+Accept: application/json
+
+###
 GET http://localhost:8080/api/basic/getSameClassificationPercentage
 Accept: application/json
 

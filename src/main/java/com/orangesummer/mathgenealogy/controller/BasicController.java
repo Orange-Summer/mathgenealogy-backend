@@ -71,4 +71,9 @@ public class BasicController {
     Collection<SameClassificationPercentageVO> getSameClassificationPercentage() {
         return basicService.getSameClassificationPercentage();
     }
+
+    @GetMapping("/getAverage")
+    Collection<Map<String, Object>> getAverage() {
+        return basicService.getAverage();
+    }
 }

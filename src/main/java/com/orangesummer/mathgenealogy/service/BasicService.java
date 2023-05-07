@@ -33,4 +33,6 @@ public interface BasicService {
     Collection<RankingVO> getRanking(String[] countries, String[] classifications, Integer start, Integer end, Integer limit);
 
     Collection<SameClassificationPercentageVO> getSameClassificationPercentage();
+
+    Collection<Map<String, Object>> getAverage();
 }

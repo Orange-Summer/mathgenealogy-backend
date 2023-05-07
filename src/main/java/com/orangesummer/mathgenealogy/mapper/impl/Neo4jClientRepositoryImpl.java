@@ -65,14 +65,13 @@ public class Neo4jClientRepositoryImpl implements Neo4jClientRepository {
     }
 
     @Override
-    public Collection<Map<String, Object>> countByAllCountry() {
+    public Collection<Map<String, Object>> countByAllCountry(String limit) {
         return client
                 .query("""
                         match (r)
                         return r.country as country, count(*) as num
                         order by num desc
-                        limit 25
-                        """)
+                        """ + limit)
                 .fetch()
                 .all();
     }

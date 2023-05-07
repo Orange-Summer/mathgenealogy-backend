@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -86,7 +87,7 @@ public class BasicServiceImpl implements BasicService {
 
     @Override
     public Collection<Map<String, Object>> getCountryCount() {
-        Collection<Map<String, Object>> maps = neo4jClientRepository.countByAllCountry();
+        Collection<Map<String, Object>> maps = neo4jClientRepository.countByAllCountry("limit 25");
         if (maps == null || maps.isEmpty()) {
             throw new APIException();
         }
@@ -207,5 +208,41 @@ public class BasicServiceImpl implements BasicService {
     public Collection<SameClassificationPercentageVO> getSameClassificationPercentage() {
         Collection<SameClassificationPercentage> list = neo4jClientRepository.getSameClassificationPercentageList();
         return list.stream().map(sameClassificationPercentageMapper::toSameClassificationPercentageVO).toList();
+    }
+
+    @Override
+    public Collection<Map<String, Object>> getAverage() {
+        Collection<Map<String, Object>> maps = neo4jClientRepository.countByAllCountry("");
+        if (maps == null || maps.isEmpty()) {
+            throw new APIException();
+        }
+        List<Map<String, Object>> result = new ArrayList<>();
+        DecimalFormat df = new DecimalFormat("0.0000000000");
+        for (Map<String, Object> map : maps) {
+            if (map.get("country") != null) {
+                Map<String, Object> newMap = new HashMap<>(map);
+                String country = (String) map.get("country");
+                System.out.println(map.get("country"));
+
+                int population;
+                if (Constant.COUNTRYPOPULATION.get(country) != null) {
+                    population = Constant.COUNTRYPOPULATION.get(country);
+                } else {
+                    population = 0;
+                }
+                newMap.put("population", population);
+
+                double average;
+                if (population == 0) {
+                    average = 0;
+                } else {
+                    average = (double) Integer.parseInt(map.get("num").toString()) / population;
+                }
+                newMap.put("average", df.format(average));
+
+                result.add(newMap);
+            }
+        }
+        return result;
     }
 }

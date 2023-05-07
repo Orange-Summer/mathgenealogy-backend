@@ -19,7 +19,7 @@ import java.util.Optional;
 public interface Neo4jClientRepository {
     Optional<MathematicianVO> findByMid(Long mid);
 
-    Collection<Map<String, Object>> countByAllCountry();
+    Collection<Map<String, Object>> countByAllCountry(String limit);
 
     Collection<Map<String, Object>> countByAllInstitution();
 
