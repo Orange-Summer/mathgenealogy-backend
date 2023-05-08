@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class SameClassificationPercentage {
+public class SameClassPercent {
     Integer classificationId;
     Double percent;
 }

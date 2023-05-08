@@ -4,7 +4,7 @@ import com.orangesummer.mathgenealogy.mapper.Neo4jClientRepository;
 import com.orangesummer.mathgenealogy.model.mapstruct.MathematicianMapper;
 import com.orangesummer.mathgenealogy.model.po.Mathematician;
 import com.orangesummer.mathgenealogy.model.po.Ranking;
-import com.orangesummer.mathgenealogy.model.po.SameClassificationPercentage;
+import com.orangesummer.mathgenealogy.model.po.SameClassPercent;
 import com.orangesummer.mathgenealogy.model.vo.MathematicianVO;
 import jakarta.annotation.Resource;
 import org.neo4j.driver.Record;
@@ -135,7 +135,7 @@ public class Neo4jClientRepositoryImpl implements Neo4jClientRepository {
     }
 
     @Override
-    public Collection<SameClassificationPercentage> getSameClassificationPercentageList() {
+    public Collection<SameClassPercent> findAllSameClassPercent() {
         return client
                 .query("""
                         match (m1:Mathematician)-[a1:advisorOf]->(s1:Mathematician)
@@ -146,8 +146,8 @@ public class Neo4jClientRepositoryImpl implements Neo4jClientRepository {
                         return classification, toFloat(different)/toFloat(total) as percent
                         order by classification
                         """)
-                .fetchAs(SameClassificationPercentage.class)
-                .mappedBy((TypeSystem t, Record record) -> new SameClassificationPercentage(record.get("classification").asInt(), record.get("percent").asDouble()))
+                .fetchAs(SameClassPercent.class)
+                .mappedBy((TypeSystem t, Record record) -> new SameClassPercent(record.get("classification").asInt(), record.get("percent").asDouble()))
                 .all();
     }
 

@@ -5,14 +5,14 @@ import com.orangesummer.mathgenealogy.mapper.BasicRepository;
 import com.orangesummer.mathgenealogy.mapper.Neo4jClientRepository;
 import com.orangesummer.mathgenealogy.model.mapstruct.MathematicianMapper;
 import com.orangesummer.mathgenealogy.model.mapstruct.RankingMapper;
-import com.orangesummer.mathgenealogy.model.mapstruct.SameClassificationPercentageMapper;
+import com.orangesummer.mathgenealogy.model.mapstruct.SameClassPercentMapper;
 import com.orangesummer.mathgenealogy.model.po.Mathematician;
 import com.orangesummer.mathgenealogy.model.po.Ranking;
-import com.orangesummer.mathgenealogy.model.po.SameClassificationPercentage;
+import com.orangesummer.mathgenealogy.model.po.SameClassPercent;
 import com.orangesummer.mathgenealogy.model.vo.MathematicianFindByMid;
 import com.orangesummer.mathgenealogy.model.vo.MathematicianVO;
 import com.orangesummer.mathgenealogy.model.vo.RankingVO;
-import com.orangesummer.mathgenealogy.model.vo.SameClassificationPercentageVO;
+import com.orangesummer.mathgenealogy.model.vo.SameClassPercentVO;
 import com.orangesummer.mathgenealogy.service.BasicService;
 import com.orangesummer.mathgenealogy.util.Constant;
 import jakarta.annotation.Resource;
@@ -41,7 +41,7 @@ public class BasicServiceImpl implements BasicService {
     @Resource
     RankingMapper rankingMapper;
     @Resource
-    SameClassificationPercentageMapper sameClassificationPercentageMapper;
+    SameClassPercentMapper sameClassPercentMapper;
 
     /**
      * 获取数学家个人信息
@@ -205,9 +205,9 @@ public class BasicServiceImpl implements BasicService {
     }
 
     @Override
-    public Collection<SameClassificationPercentageVO> getSameClassificationPercentage() {
-        Collection<SameClassificationPercentage> list = neo4jClientRepository.getSameClassificationPercentageList();
-        return list.stream().map(sameClassificationPercentageMapper::toSameClassificationPercentageVO).toList();
+    public Collection<SameClassPercentVO> getSameClassPercent() {
+        Collection<SameClassPercent> list = neo4jClientRepository.findAllSameClassPercent();
+        return list.stream().map(sameClassPercentMapper::toSameClassPercentVO).toList();
     }
 
     @Override

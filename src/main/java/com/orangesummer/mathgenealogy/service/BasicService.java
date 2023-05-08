@@ -3,7 +3,7 @@ package com.orangesummer.mathgenealogy.service;
 import com.orangesummer.mathgenealogy.model.vo.MathematicianVO;
 import com.orangesummer.mathgenealogy.model.vo.MathematicianFindByMid;
 import com.orangesummer.mathgenealogy.model.vo.RankingVO;
-import com.orangesummer.mathgenealogy.model.vo.SameClassificationPercentageVO;
+import com.orangesummer.mathgenealogy.model.vo.SameClassPercentVO;
 import org.springframework.data.domain.Page;
 
 import java.util.Collection;
@@ -32,7 +32,7 @@ public interface BasicService {
 
     Collection<RankingVO> getRanking(String[] countries, String[] classifications, Integer start, Integer end, Integer limit);
 
-    Collection<SameClassificationPercentageVO> getSameClassificationPercentage();
+    Collection<SameClassPercentVO> getSameClassPercent();
 
     Collection<Map<String, Object>> getAverage();
 }

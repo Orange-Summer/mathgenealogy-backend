@@ -9,7 +9,7 @@ import lombok.Data;
  * @date Created on 2023/4/24
  */
 @Data
-public class SameClassificationPercentageVO {
+public class SameClassPercentVO {
     String classification;
     Double percent;
 }

@@ -1,7 +1,7 @@
 package com.orangesummer.mathgenealogy.model.mapstruct;
 
-import com.orangesummer.mathgenealogy.model.po.SameClassificationPercentage;
-import com.orangesummer.mathgenealogy.model.vo.SameClassificationPercentageVO;
+import com.orangesummer.mathgenealogy.model.po.SameClassPercent;
+import com.orangesummer.mathgenealogy.model.vo.SameClassPercentVO;
 import com.orangesummer.mathgenealogy.util.Constant;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,10 +14,10 @@ import org.mapstruct.Named;
  * @date Created on 2023/4/24
  */
 @Mapper(componentModel = "spring")
-public interface SameClassificationPercentageMapper {
+public interface SameClassPercentMapper {
 
     @Mapping(source = "classificationId", target = "classification", qualifiedByName = "idToClassification")
-    SameClassificationPercentageVO toSameClassificationPercentageVO(SameClassificationPercentage sameClassificationPercentage);
+    SameClassPercentVO toSameClassPercentVO(SameClassPercent sameClassPercent);
 
     @Named("idToClassification")
     default String idToClassification(Integer classificationId) {

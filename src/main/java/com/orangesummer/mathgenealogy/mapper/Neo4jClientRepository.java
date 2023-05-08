@@ -1,7 +1,7 @@
 package com.orangesummer.mathgenealogy.mapper;
 
 import com.orangesummer.mathgenealogy.model.po.Ranking;
-import com.orangesummer.mathgenealogy.model.po.SameClassificationPercentage;
+import com.orangesummer.mathgenealogy.model.po.SameClassPercent;
 import com.orangesummer.mathgenealogy.model.vo.MathematicianVO;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +27,6 @@ public interface Neo4jClientRepository {
 
     Collection<Ranking> findTopByDescendant(String query);
 
-    Collection<SameClassificationPercentage> getSameClassificationPercentageList();
+    Collection<SameClassPercent> findAllSameClassPercent();
 
 }
