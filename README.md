@@ -1,8 +1,8 @@
-# 数学家族谱的可视化系统-后端(mathgenealogy-backend)
+# 数学家数字族谱的可视化系统-后端(mathgenealogy-backend)
 
 ## Neo4j 数据库导入数据
 
-1. 将 mathematician.csv 和 advisor.csv 放入 neo4j 目录下的 import 文件夹中。
+1. 将 mathematician.csv 和 advisor.csv（可以从 [Orange-Summer/mathgenealogy-crawler (github.com)](https://github.com/Orange-Summer/mathgenealogy-crawler) 此处的 data 文件夹中获得）放入 neo4j 目录下的 import 文件夹中。
 2. 启动 neo4j 数据库。
 3. 在数据库中运行下列语句：
 
